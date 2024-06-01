@@ -753,38 +753,6 @@ export default {
         column: "col-6"
       },
 
-      iotIndicatorConfig: {
-        userId: "userid",
-        selectedDevice: {
-          name: "Home",
-          dId: "8888"
-        },
-        variableFullName: "temperature",
-        variable: "varname",
-        class: "success",
-        widget: "indicator",
-        icon: "fa-bath",
-        column: "col-6"
-      },
-
-      configButton: {
-        userId: "userid",
-        selectedDevice: {
-          name: "Home",
-          dId: "8888",
-          templateName: "Power Sensor",
-          templateId: "984237562348756ldksjfh",
-          saverRule: false
-        },
-        variableFullName: "Pump",
-        variable: "var1",
-        icon: "fa-sun",
-        column: "col-4",
-        widget: "indicator",
-        class: "danger",
-        message: "{'fanstatus': 'stop'}"
-      },
-
       configIndicator: {
         userId: "userid",
         selectedDevice: {
@@ -807,7 +775,7 @@ export default {
   methods: {
     addNewWidget() {
       if (this.widgetType == "numberchart") {
-        this.ncConfig.variable = this.makeid(10);
+        this.ncConfig.variable = this.makeid(10); //makeid is a custom function to make unique IDs for identifying each widget internally
         this.widgets.push(JSON.parse(JSON.stringify(this.ncConfig)));
       }
 
