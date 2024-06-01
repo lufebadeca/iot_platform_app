@@ -74,12 +74,17 @@
         </div>
 
         <el-table :data="devices">
+          <!-- needs Table and Table.Column. Passing the objects array 'devices' from export default below -->
+
           <el-table-column label="#" min-width="50" align="center">
+            <!-- slot-scope to extract information of the current iteration (table-column is automated) -->
+
             <div slot-scope="{ row, $index }">
               {{ $index + 1 }}
             </div>
           </el-table-column>
 
+          <!-- prop is the source of the column data. Cells will automatically fill for rows  -->
           <el-table-column prop="name" label="Name"></el-table-column>
 
           <el-table-column prop="dId" label="Device Id"></el-table-column>
@@ -91,34 +96,25 @@
 
           <el-table-column label="Actions">
             <div slot-scope="{ row, $index }">
+              <!-- slot-scope to extract information of the current iteration (table-column is automated) -->
 
+              <!-- compact container to host buttons, icons and similar within table cells. Content is shown when hovering -->
               <el-tooltip content="Saver Status Indicator" style="margin-right:10px">
+
+                <!-- icon object for database. Fix class database, variable classes: text-success when saverRule = true and text-dark when false  -->
                 <i class="fas fa-database " :class="{'text-success' : row.saverRule, 'text-dark' : !row.saverRule}" ></i>
               </el-tooltip>
-
+              
+              <!-- switch for each row. Uses index to send iteration number as parameter for updating the right DB status -->
               <el-tooltip content="Database Saver">
-                <base-switch
-                  @click="updateSaverRuleStatus($index)"
-                  :value="row.saverRule"
-                  type="primary"
-                  on-text="On"
-                  off-text="Off"
-                ></base-switch>
+                <base-switch @click="updateSaverRuleStatus($index)" :value="row.saverRule" type="primary" on-text="On" off-text="Off">
+                </base-switch>
               </el-tooltip>
-
-              <el-tooltip
-                content="Delete"
-                effect="light"
-                :open-delay="300"
-                placement="top"
-              >
-                <base-button
-                  type="danger"
-                  icon
-                  size="sm"
-                  class="btn-link"
-                  @click="deleteDevice(row)"
-                >
+              
+              <!-- tooltip for delete button -->
+              <el-tooltip content="Delete" effect="light" :open-delay="300" placement="top">
+                <!-- tooltip for delete button -->
+                <base-button type="danger" icon size="sm" class="btn-link" @click="deleteDevice(row)">
                   <i class="tim-icons icon-simple-remove "></i>
                 </base-button>
               </el-tooltip>

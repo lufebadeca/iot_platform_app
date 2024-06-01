@@ -123,52 +123,52 @@
                 <el-option
                   class="text-dark"
                   value="col-3"
-                  label="col-3"
+                  label="1/4 (col-3)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-4"
-                  label="col-4"
+                  label="1/3 (col-4)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-5"
-                  label="col-5"
+                  label="41.7% (col-5)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-6"
-                  label="col-6"
+                  label="1/2 (col-6)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-7"
-                  label="col-7"
+                  label="58% (col-7)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-8"
-                  label="col-8"
+                  label="2/3 (col-8)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-9"
-                  label="col-9"
+                  label="3/4 (col-9)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-10"
-                  label="col-10"
+                  label="5/6 (col-10)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-11"
-                  label="col-11"
+                  label="91.7% (col-11)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-12"
-                  label="col-12"
+                  label="100% (col-12)"
                 ></el-option>
               </el-select>
 
@@ -231,52 +231,52 @@
                 <el-option
                   class="text-dark"
                   value="col-3"
-                  label="col-3"
+                  label="1/4 (col-3)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-4"
-                  label="col-4"
+                  label="1/3 (col-4)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-5"
-                  label="col-5"
+                  label="41.7% (col-5)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-6"
-                  label="col-6"
+                  label="1/2 (col-6)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-7"
-                  label="col-7"
+                  label="58% (col-7)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-8"
-                  label="col-8"
+                  label="2/3 (col-8)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-9"
-                  label="col-9"
+                  label="3/4 (col-9)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-10"
-                  label="col-10"
+                  label="5/6 (col-10)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-11"
-                  label="col-11"
+                  label="91.7% (col-11)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-12"
-                  label="col-12"
+                  label="100% (col-12)"
                 ></el-option>
               </el-select>
 
@@ -353,52 +353,52 @@
                 <el-option
                   class="text-dark"
                   value="col-3"
-                  label="col-3"
+                  label="1/4 (col-3)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-4"
-                  label="col-4"
+                  label="1/3 (col-4)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-5"
-                  label="col-5"
+                  label="41.7% (col-5)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-6"
-                  label="col-6"
+                  label="1/2 (col-6)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-7"
-                  label="col-7"
+                  label="58% (col-7)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-8"
-                  label="col-8"
+                  label="2/3 (col-8)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-9"
-                  label="col-9"
+                  label="3/4 (col-9)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-10"
-                  label="col-10"
+                  label="5/6 (col-10)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-11"
-                  label="col-11"
+                  label="91.7% (col-11)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-12"
-                  label="col-12"
+                  label="100% (col-12)"
                 ></el-option>
               </el-select>
 
@@ -461,52 +461,52 @@
                 <el-option
                   class="text-dark"
                   value="col-3"
-                  label="col-3"
+                  label="1/4 (col-3)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-4"
-                  label="col-4"
+                  label="1/3 (col-4)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-5"
-                  label="col-5"
+                  label="41.7% (col-5)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-6"
-                  label="col-6"
+                  label="1/2 (col-6)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-7"
-                  label="col-7"
+                  label="58% (col-7)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-8"
-                  label="col-8"
+                  label="2/3 (col-8)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-9"
-                  label="col-9"
+                  label="3/4 (col-9)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-10"
-                  label="col-10"
+                  label="5/6 (col-10)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-11"
-                  label="col-11"
+                  label="91.7% (col-11)"
                 ></el-option>
                 <el-option
                   class="text-dark"
                   value="col-12"
-                  label="col-12"
+                  label="100% (col-12)"
                 ></el-option>
               </el-select>
 
@@ -554,7 +554,7 @@
 
     <!-- DASHBOARD PREVIEW -->
     <div class="row">
-      <div v-for="(widget, index) of widgets" :class="[widget.column]">
+      <div v-for="(widget, index) of widgets" :key="index" :class="[widget.column]">
         <i
           aria-hidden="true"
           class="fa fa-trash text-warning pull-right"
@@ -825,6 +825,9 @@ export default {
         this.configIndicator.variable = this.makeid(10);
         this.widgets.push(JSON.parse(JSON.stringify(this.configIndicator)));
       }
+    },
+    deleteWidget(index){
+      this.widgets.splice(index, 1);
     },
     makeid(length) {
       var result = "";
