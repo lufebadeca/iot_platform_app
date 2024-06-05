@@ -700,8 +700,8 @@ export default {
   },
   data() {
     return {
-      widgets: [],
-      templates: [],
+      widgets: [],  //stores widgets created by user
+      templates: [],  //stores templates (collections of widgets) created by user
       widgetType: "",
       templateName: "",
       templateDescription: "",
@@ -776,7 +776,7 @@ export default {
     addNewWidget() {
       if (this.widgetType == "numberchart") {
         this.ncConfig.variable = this.makeid(10); //makeid is a custom function to make unique IDs for identifying each widget internally
-        this.widgets.push(JSON.parse(JSON.stringify(this.ncConfig)));
+        this.widgets.push(JSON.parse(JSON.stringify(this.ncConfig))); //to avoid passing widget config as reference. this because of v-model user inputs
       }
 
       if (this.widgetType == "switch") {

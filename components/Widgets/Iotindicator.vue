@@ -32,7 +32,7 @@ export default {
     this.$nuxt.$on(topic, this.processReceivedData);  //listener on new messages for 'topic', execute processReceivedData (no parenthesis)
   },
   beforeDestroy(){
-    //this is really important. Avoids undesired reactivity from 
+    //this is really important. Avoids duplicate subscriptions, which happens every time we load the component (when mounted)
     this.$nuxt.$off(this.config.userId + "/" + this.config.selectedDevice.dId + "/" + this.config.variable + "/sdata")
   },
   methods: {

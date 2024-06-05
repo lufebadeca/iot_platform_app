@@ -31,15 +31,13 @@ export default {
   methods: {
 
     sendValue() {
-
         this.sending = true;
-
         setTimeout(() => {
             this.sending = false;
         }, 500);
 
         const toSend = {
-            topic: this.config.userId + "/" + this.config.selectedDevice.dId + "/" + this.config.variable + "/actdata",
+            topic: this.config.userId + "/" + this.config.selectedDevice.dId + "/" + this.config.variable + "/actdata", //actdata for setting apart outgoing data
             msg: {
                 value: this.config.message
             }
@@ -47,14 +45,12 @@ export default {
 
         console.log(toSend);
         this.$nuxt.$emit('mqtt-sender', toSend);
-
-
     },
    
 
     getIconColorClass() {
 
-      if (!this.sending) {
+      if (!this.sending) {    //sending is for now a setTimeOut to simulate a sending process. If sending, it will have color, else, dark
         return "text-dark";
       }
 

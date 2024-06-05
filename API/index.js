@@ -8,8 +8,8 @@ const colors = require("colors");     //enables color fonts in terminal
 //instances
 const app = express();  //app is the var that represents express
 
-//express congig
-app.use(morgan("tiny"));    //output for all endpoint extant or not, tiny for small text
+//express config
+app.use(morgan("tiny"));    //output for all routes extant or not, tiny for small text
 app.use(express.json());    //allows json usage
 app.use(express.urlencoded({extended: true}));  //enables URL parameters ?userId=111&userName=222
 app.use(cors());
@@ -24,7 +24,7 @@ module.exports = app;
 app.listen(3001, () => {console.log('API listening on 3001')});
 
 //endpoint text (address to hit)
-app.get("/testing", (req, res) => {
+app.get("/testing", (req, res) => {     // /testing?Name=xxx&Age=ccc&Pass=sss
     const data = (`Name = ${req.query.name}, Age = ${req.query.age}, Pass= ${req.query.pass}`);
     console.log(data);
     res.send("Hello, web pals. the data is " + data);
