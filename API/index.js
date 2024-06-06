@@ -18,7 +18,7 @@ app.use(cors());
 app.use("/api", require("./routes/devices.js"))
 app.use("/api", require("./routes/users.js"))
 
-module.exports = app;
+module.exports = app;       //this commands allows to export endpoints or routes in separate files and folder 
 
 //listener
 app.listen(3001, () => {console.log('API listening on 3001')});

@@ -11,7 +11,7 @@ const userSchema = new Schema({
     password: {type: String, required: [true] }
 });
 
-//Validator
+//Validator for unique email values
 userSchema.plugin(uniqueValidator, {message: 'Error, email already exists'});
 
 //Convert to model
