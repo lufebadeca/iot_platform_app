@@ -4,11 +4,14 @@ const jst = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 //models import
-import User from '../models/user.js';
+import User from '../models/user.js';     //requires babel, since NodeJs does not support these modern imports
+                                //create a .babelrc file in the project folder, {"presets": "@babel/preset-env"}
+                                //in package.json, scripts, create custom "devn": "nodemon api/index.js --exec babel-node"
+                                //runs with npm run devn
 
 router.get('/new-user', async (req, res)=>{
     try {
-        const user = await User.create(
+        const user = await User.create(     //using the User model, waits for a response
             {
                 name: "James",
                 email: "j@gmail.com",
@@ -19,7 +22,6 @@ router.get('/new-user', async (req, res)=>{
         console.log(error);
         res.json({"status":"failed"});
     }
-
 });
 
 module.exports = router;

@@ -37,7 +37,9 @@ const mongoHost = "localhost";
 const mongoPort = "27017";
 const mongoDatabase = "ioticos_god_level";
 
-var uri = "mongodb://" + mongoUserName + ":" + mongoPassword + "@" + mongoHost + ";" + mongoPort + "/" + mongoDatabase;
+var uri = "mongodb://" + mongoUserName + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort + "/" + mongoDatabase;
+
+//var uri = "mongodb://localhost:27017"
 
 const options = {
     useNewUrlParser: true,
@@ -47,24 +49,19 @@ const options = {
     authSource: "admin"
 };
 
-try {
-    mongoose.connect(uri, options).then(
-        ()=>{
-            console.log("\n");
-            console.log("****************************************".green);
-            console.log("***** Mongo connected successfully *****".green);
-            console.log("****************************************".green);
-            console.log("\n");
-        },
-        (err) => {
-            console.log("\n");
-            console.log("**********************************".red);
-            console.log("***** Mongo connection error *****".red);
-            console.log("**********************************".red);
-            console.log("\n");
-        }
-    );
-} catch (error) {
-    console.log("Error connecting Mongo");
-    console.log(error);
-}
+mongoose.connect(uri, options).then(
+    ()=>{
+        console.log("\n");
+        console.log("****************************************".green);
+        console.log("***** Mongo connected successfully *****".green);
+        console.log("****************************************".green);
+        console.log("\n");
+    },
+    (err) => {
+        console.log("\n");
+        console.log("**********************************".red);
+        console.log("***** Mongo connection error *****".red);
+        console.log("**********************************".red);
+        console.log("\n");
+    }
+);
