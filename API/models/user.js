@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 const uniqueValidator = require('mongoose-unique-validator');
 //we need a model for user to restrict the type of data to be entered into the DB and give some structure, unique values, create Ids, etc
 
-
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
