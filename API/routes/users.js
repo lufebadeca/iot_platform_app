@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const jst = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 //models import
@@ -9,47 +9,92 @@ import User from '../models/user.js';     //requires babel, since NodeJs does no
                                 //in package.json, scripts, create custom "devn": "nodemon api/index.js --exec babel-node"
                                 //runs with npm run devn
 
+//Auth
+router.post("/login", async (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+    
+        var user = await User.findOne({ email: email });    //retrieves user from mongoDB
+        
+        if(!user){
+            const toSend = {
+                status: "error",
+                error: "Invalid credentials"
+            }
+            //401 is authentication error
+            return res.status(401).json(toSend);
+        };
+
+        if (bcrypt.compareSync(password, user.password)){
+            
+            user.set('password', undefined, {strict:false});    //sets user.password to undefined to avoid
+
+            const token = jwt.sign({userData: user}, 'securePasswordHere', {expiresIn: 60*60*24*30});   //signs whole user
+            
+            const toSend = {
+                status: "success",
+                token: token,
+                userData: user
+            }
+            //200 is process OK, can be omitted
+            return res.status(200).json(toSend);
+        }
+        else{
+            const toSend = {
+                status: "error",
+                error: "Invalid credentials"
+            }
+            //401 is authentication error
+            return res.status(401).json(toSend);
+        }
+
+        res.status(200).json({"status": "success"});
+    } catch (error) {
+        console.log("login error");
+        console.log(error);
+    }
+
+
+});
+
 //USER AUTH (login and register)
 router.post("/register", async (req, res) => {
-     //from the user model, check parameters: name, email, password
-    
+    //from the user model, check parameters: name, email, password
+   
+   try {
+       const name = req.body.name;
+       const email = req.body.email;
+       const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
+       
+       const newUser = {
+           name: name,
+           email: email,
+           password: encryptedPassword
+       };
+   
+       var user = await User.create(newUser);
+   
+       console.log(user);
+   
+       const toSend = {
+           status: "success"
+       };
+   
+       res.json(toSend);
+       
+   }
+   catch (error) {
+       console.log("failed user register");
+       console.log(error);
 
-    try {
-        const name = req.body.name;
-        const email = req.body.email;
-        const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
-        
-        const newUser = {
-            name: name,
-            email: email,
-            password: encryptedPassword
-        };
-    
-        var user = await User.create(newUser);
-    
-        console.log(user);
-    
-        const toSend = {
-            status: "success"
-        };
-    
-        res.json(toSend);
-        
-    }
-    catch (error) {
-        console.log("failed user register");
-        console.log(error);
-
-        const toSend = {
-            status: "error"
-        };
-    
-        res.status(500).json(toSend);
-    }
+       const toSend = {
+           status: "error"
+       };
+   
+       res.status(500).json(toSend);
+   }
 }); 
-
-router.post("/login", (req, res) => {
-});
 
 //USER CRUD
 router.delete("/devices", (req, res) => {  //(Delete)
