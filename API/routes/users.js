@@ -9,7 +9,7 @@ import User from '../models/user.js';     //requires babel, since NodeJs does no
                                 //in package.json, scripts, create custom "devn": "nodemon api/index.js --exec babel-node"
                                 //runs with npm run devn
 
-//Auth
+//USER LOGIN with auth
 router.post("/login", async (req, res) => {
     try {
         const email = req.body.email;
@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
 
 });
 
-//USER AUTH (login and register)
+//USER REGISTER
 router.post("/register", async (req, res) => {
     //from the user model, check parameters: name, email, password
    
