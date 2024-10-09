@@ -14,9 +14,9 @@ app.use(express.json());    //allows json usage
 app.use(express.urlencoded({extended: true}));  //enables URL parameters ?userId=111&userName=222
 app.use(cors());
 
-//express routes ###IMPORTANT TO ADD EACH ROUTE HERE!!! USE SUB-DOMAIN API
-app.use("/api", require("./routes/devices.js"))
-app.use("/api", require("./routes/users.js"))
+//express routes ###IMPORTANT TO ADD EACH ROUTE HERE!!! USE SUB-DOMAIN API (parsers for data type)
+app.use("/api", require("./routes/devices.js"));
+app.use("/api", require("./routes/users.js"));
 
 module.exports = app;       //this commands allows to export endpoints or routes in separate files and folder 
 
@@ -32,10 +32,10 @@ app.get("/testing", (req, res) => {     // /testing?Name=xxx&Age=ccc&Pass=sss
 
 //Mongo Connection
 const mongoUserName = "Luifer";
-const mongoPassword = 1234;
+const mongoPassword = "Luifer94";
 const mongoHost = "localhost";
 const mongoPort = "27017";
-const mongoDatabase = "ioticos_god_level";
+const mongoDatabase = "ioticosgodlevel";
 
 var uri = "mongodb://" + mongoUserName + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort + "/" + mongoDatabase;
 

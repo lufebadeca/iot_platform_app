@@ -13,13 +13,11 @@ let checkAuth = (req, res, next) => {
             });
         }
         //req is initially empty, it passes Userdata to the token
-        req.UserData = decoded.UserData;
+        req.userData = decoded.userData;
 
         //next passes the data to the arrow funtion in [get]/device
         next();
     });
-    
-
 };
 
 module.exports = { checkAuth };

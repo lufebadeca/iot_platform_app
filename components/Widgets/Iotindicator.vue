@@ -10,8 +10,8 @@
 
     <!-- class with braces {} for variable-linked classes. Class with sq brackets for array containing class from variable and method -->
     <i class="fa " :class="[config.icon, getIconColorClass()]" style="font-size: 30px" ></i>
-    <!-- as intended, user will pass incomplete class name in UX. getIconColorClass() gives the full name of the class to name the icon.
-    When value is false,returns text-dark, else for on, returns complete name e.g. text-success or text-primary or whatever applies  -->
+    <!-- as intended, user will pass incomplete class name in UX. getIconColorClass() gives the full name of the class to name the icon color.
+    When value is false, returns text-dark, else for on, returns complete name e.g. text-success or text-primary or whatever applies  -->
   </card>
 </template>
 
@@ -60,6 +60,9 @@ export default {
       }
       if (this.config.class == "danger") {
         return "text-danger";
+      }
+      if (this.config.class == "info") {
+        return "text-info";
       }
     }
 

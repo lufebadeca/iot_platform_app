@@ -110,6 +110,11 @@
                   value="danger"
                   label="Danger"
                 ></el-option>
+                <el-option
+                  class="text-info"
+                  value="info"
+                  label="Info"
+                ></el-option>
               </el-select>
 
               <br /><br /><br />
@@ -217,6 +222,11 @@
                   class="text-danger"
                   value="danger"
                   label="Danger"
+                ></el-option>
+                <el-option
+                  class="text-info"
+                  value="info"
+                  label="Info"
                 ></el-option>
               </el-select>
 
@@ -340,6 +350,11 @@
                   value="danger"
                   label="Danger"
                 ></el-option>
+                <el-option
+                  class="text-info"
+                  value="info"
+                  label="Info"
+                ></el-option>
               </el-select>
 
               <br /><br /><br />
@@ -447,6 +462,11 @@
                   class="text-danger"
                   value="danger"
                   label="Danger"
+                ></el-option>
+                <el-option
+                  class="text-info"
+                  value="info"
+                  label="Info"
                 ></el-option>
               </el-select>
 

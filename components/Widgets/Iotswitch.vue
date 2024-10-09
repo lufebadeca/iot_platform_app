@@ -69,6 +69,9 @@
                 if (this.config.class == "danger") {
                     return "text-danger";
                 }
+                if (this.config.class == "info") {
+                    return "text-info";
+                }
             },
 
 

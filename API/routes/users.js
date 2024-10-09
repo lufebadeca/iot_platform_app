@@ -9,7 +9,7 @@ import User from '../models/user.js';     //requires babel, since NodeJs does no
                                 //in package.json, scripts, create custom "devn": "nodemon api/index.js --exec babel-node"
                                 //runs with npm run devn
 
-//USER LOGIN with auth
+//USER LOGIN with user auth and token retrieved for session persistance
 router.post("/login", async (req, res) => {
     try {
         const email = req.body.email;
@@ -28,7 +28,7 @@ router.post("/login", async (req, res) => {
 
         if (bcrypt.compareSync(password, user.password)){
             
-            user.set('password', undefined, {strict:false});    //sets user.password to undefined to avoid
+            user.set('password', undefined, {strict:false});    //sets user.password to undefined to hide in token
 
             const token = jwt.sign({userData: user}, 'securePasswordHere', {expiresIn: 60*60*24*30});   //signs whole user
             
@@ -49,7 +49,6 @@ router.post("/login", async (req, res) => {
             return res.status(401).json(toSend);
         }
 
-        res.status(200).json({"status": "success"});
     } catch (error) {
         console.log("login error");
         console.log(error);

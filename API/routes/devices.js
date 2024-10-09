@@ -1,7 +1,9 @@
+import Device from "../models/device";
 const express = require("express");
 const router = express.Router();
 
-const {checkAuth} = require('../middlewares/authentication.js');
+const {checkAuth} = require('../middlewares/authentication');
+
 
 
 /*router.get("/testingDev", (req, res) => {       //from here, instead of app.get you use router.get
@@ -34,8 +36,37 @@ router.get("/device", checkAuth, (req, res) => { //token is passed via Header
     return res.status(200).json(toSend);
 });
 
-router.post("/device", (req, res) => {  //(Create)
-    
+router.post("/device", checkAuth, async (req, res) => {  //(Create)
+
+    console.log( req.userData );
+    const userId = req.userData._id;    //from token
+    var newDevice = req.body.newDevice;
+
+    //console.log( newDevice );
+
+    newDevice.userId = userId; //adding userId to the device being passed
+    newDevice.createdTime = Date.now();
+
+    try {
+        const device = await Device.create( newDevice );
+
+        const toSend = {
+            status: "success"
+        }
+        res.json( toSend );
+
+    } catch (error) {
+
+        const toSend = {
+            status: "error",
+            error: "Failed to create the device"
+        }
+        console.log( "ERROR CREATING NEW DEVICE");
+        console.log( error );
+        res.status(401).json(toSend);
+    }
+
+
 });
 
 router.delete("/devices", (req, res) => {  //(Delete)
@@ -47,3 +78,15 @@ router.put("/device", (req, res) => {  //Update
 });
 
 module.exports = router;        //requires export to connect this endpoint with index
+
+/*
+{
+    "newDevice": {
+        "userId": "abcde",
+        "dId": "121212",
+        "name": "HOME",
+        "templateName": "esp32 template",
+        "templateId": "ababab"
+    }
+}
+*/
