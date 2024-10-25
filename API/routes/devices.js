@@ -25,16 +25,32 @@ router.post("/testingDev", (req, res) => {       //from here, instead of app.get
 //CRUD -with post only?- (Create, Read, Update, Delete), should use GET/ POST/ Put/ Delete as standard
 
 //localhost:3001/api/device?dId=XXX (URL runs a GET by default)
-router.get("/device", checkAuth, (req, res) => { //token is passed via Header
+router.get("/device", checkAuth, async (req, res) => {
 
-    console.log(req.userData);
-
-    const toSend = {
-        status: "OK",
-        data: "[dev1, dev2, dev3, dev4, dev5]"
+    try {
+  
+      const userId = req.userData._id;
+      const devices = await Device.find({ userId: userId });
+  
+      const toSend = {
+        status: "success",
+        data: devices
+      };
+  
+      res.json(toSend);
+  
+    } catch (error) {
+  
+      console.log("ERROR GETTING DEVICES")
+  
+      const toSend = {
+        status: "error",
+        error: error
+      };
+  
+      return res.status(500).json(toSend);
     }
-    return res.status(200).json(toSend);
-});
+  });
 
 router.post("/device", checkAuth, async (req, res) => {  //(Create)
 
@@ -59,23 +75,82 @@ router.post("/device", checkAuth, async (req, res) => {  //(Create)
 
         const toSend = {
             status: "error",
-            error: "Failed to create the device"
+            error: error
         }
         console.log( "ERROR CREATING NEW DEVICE");
         console.log( error );
-        res.status(401).json(toSend);
+        res.status(500).json(toSend);
     }
 
 
 });
 
-router.delete("/devices", (req, res) => {  //(Delete)
+router.delete("/device", checkAuth, async (req, res) => {  //(Delete)
     
+    try {
+        const userId = req.userData._id;
+        const dId = req.query.dId;  //delete method uses query too
+    
+        const result = await Device.deleteOne({ userId: userId, dId: dId  });
+    
+        const toSend = {
+            status: "success",
+            result: result
+        }
+    
+        return res.json(toSend);
+    } catch (error) {
+        const toSend = {
+            status: "error",
+            error: error
+        }
+        console.log( "ERROR DELETING DEVICE");
+        console.log( error );
+        res.status(500).json(toSend);
+    }
+
+
 });
 
-router.put("/device", (req, res) => {  //Update
-    
-});
+router.put("/device", checkAuth, (req, res) => {    //Updates the selected property
+    const dId = req.body.dId;
+    const userId = req.userData._id;
+  
+    if (selectDevice(userId, dId)) {
+      const toSend = {
+        status: "success"
+      };
+  
+      return res.json(toSend);
+    } else {
+      const toSend = {
+        status: "error"
+      };
+  
+      return res.json(toSend);
+    }
+  });
+
+async function selectDevice(userId, dId) {
+    try {
+      const result = await Device.updateMany(
+        { userId: userId },
+        { selected: false }
+      );
+  
+      const result2 = await Device.updateOne(
+        { dId: dId, userId: userId },
+        { selected: true }
+      );
+  
+      return true;
+  
+    } catch (error) {
+      console.log("ERROR IN 'selectDevice' FUNCTION ");
+      console.log(error);
+      return false;
+    }
+  }
 
 module.exports = router;        //requires export to connect this endpoint with index
 

@@ -88,7 +88,8 @@ router.post("/register", async (req, res) => {
        console.log(error);
 
        const toSend = {
-           status: "error"
+           status: "error",
+           error: error
        };
    
        res.status(500).json(toSend);
