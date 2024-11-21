@@ -26,12 +26,11 @@ router.post("/login", async (req, res) => {
             return res.status(401).json(toSend);
         };
 
+        //if theres is email and email is OK: 
         if (bcrypt.compareSync(password, user.password)){
             
             user.set('password', undefined, {strict:false});    //sets user.password to undefined to hide in token
-
             const token = jwt.sign({userData: user}, 'securePasswordHere', {expiresIn: 60*60*24*30});   //signs whole user
-            
             const toSend = {
                 status: "success",
                 token: token,
@@ -53,8 +52,6 @@ router.post("/login", async (req, res) => {
         console.log("login error");
         console.log(error);
     }
-
-
 });
 
 //USER REGISTER
@@ -73,15 +70,11 @@ router.post("/register", async (req, res) => {
        };
    
        var user = await User.create(newUser);
-   
        console.log(user);
-   
        const toSend = {
            status: "success"
        };
-   
        res.json(toSend);
-       
    }
    catch (error) {
        console.log("failed user register");

@@ -4,8 +4,6 @@ const router = express.Router();
 
 const {checkAuth} = require('../middlewares/authentication');
 
-
-
 /*router.get("/testingDev", (req, res) => {       //from here, instead of app.get you use router.get
     console.log("hello terminal from js");
     console.log(req.query);
