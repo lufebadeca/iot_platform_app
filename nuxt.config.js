@@ -4,7 +4,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'IoT GL',
+    title: 'IoT Gator',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -54,8 +54,6 @@ export default {
     '@nuxtjs/axios',
     'nuxt-highcharts',
   ],
-
-
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {

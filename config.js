@@ -5,6 +5,7 @@ export default {
       info: '#1d8cf8',
       danger: '#fd5d93',
       orange: '#ff8a76',
+      red: '#fc2636',
       teal: '#00d6b4',
       primaryGradient: [
         'rgba(76, 211, 150, 0.1)',

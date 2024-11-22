@@ -155,6 +155,12 @@
                 if (c == "warning") {
                     this.chartOptions.series[0].color = "#ff8d72";
                 }
+                if (c == "yellow") {
+                    this.chartOptions.series[0].color = "#eaf371";
+                }
+                if (c == "red") {
+                    this.chartOptions.series[0].color = "#fc2636";
+                }
                 if (c == "danger") {
                     this.chartOptions.series[0].color = "#fd5d93";
                 }

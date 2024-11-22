@@ -1,17 +1,17 @@
 <template>
-    <div class="wrapper">
-      <notifications></notifications>
-  
-      <router-view name="header"></router-view>
-  
-      <div :class="{ content: true }" style="margin-top: 100px;">
-        <zoom-center-transition :duration="200" mode="out-in">
-          <!-- your content here -->
-          <nuxt />
-        </zoom-center-transition>
-      </div>
+  <div class="wrapper">
+    <notifications></notifications>
+
+    <router-view name="header"></router-view>
+
+    <div :class="{ content: true }" style="margin-top: 100px;">
+      <zoom-center-transition :duration="200" mode="out-in">
+        <!-- your content here -->
+        <nuxt />
+      </zoom-center-transition>
     </div>
-  </template>
+  </div>
+</template>
   <script>
   /* eslint-disable no-new */
   import PerfectScrollbar from "perfect-scrollbar";

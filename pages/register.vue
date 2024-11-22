@@ -4,7 +4,7 @@
       <card class="card-login card-white">
         <template slot="header">
           <img src="img//card-primary.png" alt="" />
-          <h1 class="card-title">IoT GL</h1>
+          <h1 class="card-title">IoT Gator</h1>
         </template>
 
         <div>
@@ -65,6 +65,7 @@
 
 <script>
 export default {
+  middleware: "unauthenticated",
   layout: "auth",
   data() {
     return {

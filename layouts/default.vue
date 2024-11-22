@@ -4,8 +4,8 @@
 
     <side-bar
       :background-color="sidebarBackground"
-      short-title="GL"
-      title="IoTicos GL"
+      short-title="Gt"
+      title="IoT gator"
     >
       <template slot-scope="props" slot="links">
         <sidebar-item
@@ -105,7 +105,7 @@ export default {
   },
   data() {
     return {
-      sidebarBackground: "primary" //vue|blue|orange|green|red|primary
+      sidebarBackground: "blue" //vue|blue|orange|green|red|primary
     };
   },
   computed: {

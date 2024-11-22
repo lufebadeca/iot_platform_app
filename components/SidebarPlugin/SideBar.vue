@@ -3,7 +3,7 @@
     <div class="sidebar-wrapper" ref="sidebarScrollArea">
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-          <img :src="logo" alt="app-logo" />
+          <img src="https://e7.pngegg.com/pngimages/784/182/png-clipart-crocodile-clip-alligator-crocodile-animals-fauna.png" alt="app-logo" />
         </a>
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
           {{ title }}
@@ -51,6 +51,8 @@ export default {
           'vue',
           'blue',
           'green',
+          'orange',
+          'red',
           'primary'
         ];
         return acceptedValues.indexOf(value) !== -1;

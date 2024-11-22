@@ -4,7 +4,7 @@
       <card class="card-login card-white">
         <template slot="header">
           <img src="img//card-primary.png" alt="" />
-          <h1 class="card-title">IoT GL</h1>
+          <h1 class="card-title">IoT Gator</h1>
         </template>
 
         <div>
@@ -58,6 +58,7 @@
   const Cookie = process.client ? require("js-cookie") : undefined;
   export default {
     name: "login-page",
+    middleware: "unauthenticated",
     layout: "auth",
     data() {
       return {
@@ -84,9 +85,9 @@
               token: res.data.token,  //token added to response data in backend. Structure: status, token, userData(with no password)
               userData: res.data.userData
             }
-            //token to the store: global state storage for Vue/nuxt. My state has "auth" as atribute
+            //token to the store: global state storage for Vue/nuxt. State with 'auth' attribute to store token
             this.$store.commit('setAuth', auth);
-            //set auth object in localStorage - Grabamos el token en localStorage
+            //set auth object in localStorage for persistance beyond reload: session?
             localStorage.setItem('auth', JSON.stringify(auth));
             $nuxt.$router.push('/dashboard');
             return;

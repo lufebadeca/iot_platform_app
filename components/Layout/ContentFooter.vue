@@ -4,45 +4,45 @@
       <ul class="nav">
         <li class="nav-item">
           <a
-            href="http://creative-tim.com"
+            href="http://iotgator.com"
             target="_blank"
             rel="noopener"
             class="nav-link"
           >
-            Creative Tim
+            IoTgator
           </a>
         </li>
         <li class="nav-item">
           <a
-            href="https://www.creative-tim.com/presentation"
+            href="https://lufebadeca.github.io/portfolio/"
             target="_blank"
             rel="noopener"
             class="nav-link"
           >
-            About Us
+            About Me
           </a>
         </li>
         <li class="nav-item">
           <a
-            href="http://blog.creative-tim.com"
+            href="https://github.com/lufebadeca"
             target="_blank"
             rel="noopener"
             class="nav-link"
           >
-            Blog
+            Github
           </a>
         </li>
       </ul>
       <div class="copyright">
-        &copy; {{ year }}, made with <i class="tim-icons icon-heart-2"></i> by
-        
+        &copy; {{ year }}, made by
         <a
-          href="https://www.creative-tim.com/?ref=pdf-vuejs"
+          href="https://lufebadeca.github.io/portfolio/"
           target="_blank"
           rel="noopener"
-          >Creative Tim</a
+          >Luis Baldovino</a
         >
-        for a better web.
+        <i class="tim-icons icon-laptop"></i>
+        for powerful IoT ecosystems.
       </div>
     </div>
   </footer>
