@@ -147,14 +147,14 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("getDevices")
+    this.$store.dispatch("getDevices");
   },
   methods: {
     deleteDevice(device) {
 
-      const axiosHeader = {
+      const axiosHeader = {   //a header is necessary to build the axios request
         headers: {
-          token: this.$store.state.auth.token  //access the global state token
+          token: this.$store.state.auth.token  //access the global state and retrieves token
         },
         params: {
           dId: device.dId

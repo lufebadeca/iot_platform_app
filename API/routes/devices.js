@@ -20,7 +20,7 @@ router.post("/testingDev", (req, res) => {       //from here, instead of app.get
     res.json(toReturn);
 } );*/
 
-//CRUD -with post only?- (Create, Read, Update, Delete), should use GET/ POST/ Put/ Delete as standard
+//CRUD (Create, Read, Update, Delete), Get (URL query), Post, Delete (URL query), Put
 
 //localhost:3001/api/device?dId=XXX (URL runs a GET by default)
 router.get("/device", checkAuth, async (req, res) => {

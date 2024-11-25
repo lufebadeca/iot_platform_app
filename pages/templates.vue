@@ -712,6 +712,7 @@ import { Table, TableColumn } from "element-ui";
 import { Select, Option } from "element-ui";
 
 export default {
+  middleware: "authenticated",
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
@@ -720,8 +721,8 @@ export default {
   },
   data() {
     return {
-      widgets: [],  //stores widgets created by user
-      templates: [],  //stores templates (collections of widgets) created by user
+      widgets: [],  //stored widgets created by user
+      templates: [],  //stored templates (collections of widgets) created by user
       widgetType: "",
       templateName: "",
       templateDescription: "",
@@ -791,8 +792,48 @@ export default {
       }
     };
   },
+  mounted() {
+    this.$store.dispatch("getTemplates");
+  },
 
   methods: {
+
+    async saveTemplate() {
+      const axiosHeaders = {  //a header is necessary to build the axios request
+        headers: {
+          token: this.$store.state.auth.token   //access the global state and retrieves token
+        }
+      };
+      //console.log(axiosHeaders);
+      const toSend = {
+        template: {
+          name: this.templateName,
+          description: this.templateDescription,
+          widgets: this.widgets
+        }
+      };
+      
+      try {
+        const res = await this.$axios.post("/template", toSend, axiosHeaders);  //URL (endpoint), body (payload), headers
+        if (res.data.status == "success") {
+          this.$notify({
+            type: "success",
+            icon: "tim-icons icon-alert-circle-exc",
+            message: "Template created!"
+          });
+          //this.getTemplates();
+        }
+      } catch (error) {
+        this.$notify({
+          type: "danger",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Error creating template..."
+        });
+        console.log(error);
+        return;
+      }
+    },
+
     addNewWidget() {
       if (this.widgetType == "numberchart") {
         this.ncConfig.variable = this.makeid(10); //makeid is a custom function to make unique IDs for identifying each widget internally

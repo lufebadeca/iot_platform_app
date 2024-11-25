@@ -2,7 +2,8 @@
 //accessible, but can be accessed only through methods within mutations and actions 
 export const state = () => ({   
     auth: null,
-    devices: []
+    devices: [],
+    templates: []
 });
 
 export const mutations = {    //mutations are simple state setters
@@ -12,6 +13,10 @@ export const mutations = {    //mutations are simple state setters
     
     setDevices(state, devices) {
         state.devices = devices;
+    },
+
+    setTemplates(state, templates) {
+        state.templates = templates;
     }
 };
 
@@ -39,6 +44,20 @@ export const actions = {      //actions are more elaborate methods that use the 
         .then(res => {
         console.log(res.data.data);
         this.commit("setDevices", res.data.data)
+        });
+    },
+
+    getTemplates() {
+
+        const axiosHeader = {
+        headers: {
+            token: this.state.auth.token
+        }
+        };
+        this.$axios.get("/template", axiosHeader)
+        .then(res => {
+        console.log(res.data.data);
+        this.commit("setTemplates", res.data.data)
         });
     }
 

@@ -14,6 +14,6 @@ const userSchema = new Schema({
 userSchema.plugin(uniqueValidator, {message: 'Error, email already exists'});
 
 //Convert to model
-const User = mongoose.model( 'User', userSchema );
+const User = mongoose.model( 'User', userSchema ); //third optional argument: 'custom_collection_name'. Default is pluralization of model name
 
 export default User;
