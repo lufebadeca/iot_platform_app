@@ -70,7 +70,7 @@
     },
     methods: {
     login() {
-      this.$axios  //axios is globally accessible by nuxt. middleman between API and front to make requests
+      this.$axios  //axios is globally accessible by nuxt. middleman between front and API to make requests
         .post("/login", this.user)
         .then(res => {
           //success! - Usuario creado.
@@ -80,7 +80,7 @@
               icon: "tim-icons icon-check-2",
               message: "Success! Welcome " + res.data.userData.name
             });
-            console.log(res.data)
+            console.log(res.data);
             const auth = {
               token: res.data.token,  //token added to response data in backend. Structure: status, token, userData(with no password)
               userData: res.data.userData

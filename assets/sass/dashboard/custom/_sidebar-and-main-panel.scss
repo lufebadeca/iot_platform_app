@@ -351,6 +351,18 @@
         border-bottom-color: $vue;
       }
     }
+    &[data="red"] {
+      @include linear-gradient($danger-states, $red);
+      &:before{
+        border-bottom-color: $red;
+      }
+    }
+    &[data="orange"] {
+      @include linear-gradient($warning-states, $orange);
+      &:before{
+        border-bottom-color: $orange;
+      }
+    }
 
 
     .user{
@@ -455,6 +467,12 @@
     }
     &[data="vue"]{
       border-top: 2px solid $vue;
+    }
+    &[data="red"]{
+      border-top: 2px solid $red;
+    }
+    &[data="orange"]{
+      border-top: 2px solid $orange;
     }
 
     > .content {

@@ -65,8 +65,8 @@
           { color: 'primary', active: false, value: 'primary' },
           { color: 'vue', active: false, value: 'vue' },
           { color: 'info', active: true, value: 'blue' },
-          //{ color: 'warning', active: false, value: "orange?" },
-          //{ color: 'danger', active: false, value: "red" },
+          { color: 'warning', active: false, value: 'orange' },
+          { color: 'danger', active: false, value: 'red' },
           { color: 'success', active: false, value: 'green' }
         ]
       };
@@ -85,8 +85,9 @@
         itemToActivate.active = true;
       },
       changeSidebarBackground(item) {
-        this.$emit('update:backgroundColor', item.value);
-        this.toggleList(this.sidebarColors, item);
+        console.log('Emitting value:', item.value);
+        this.$emit('update:backgroundColor', item.value); //emit notifies the parent component of the event and sends the new value
+        this.toggleList(this.sidebarColors, item);    //activates the picked color
       },
       toggleMode(type) {
         let docClasses = document.body.classList;

@@ -17,6 +17,7 @@ app.use(cors());
 //express routes ###IMPORTANT TO ADD EACH ROUTE HERE!!! USE SUB-DOMAIN API (parsers for data type)
 app.use("/api", require("./routes/devices.js"));
 app.use("/api", require("./routes/users.js"));
+app.use("/api", require("./routes/templates.js"));
 
 module.exports = app;       //this commands allows to export endpoints or routes in separate files and folder 
 
@@ -35,7 +36,7 @@ const mongoUserName = "Luifer";
 const mongoPassword = "Luifer94";
 const mongoHost = "localhost";
 const mongoPort = "27017";
-const mongoDatabase = "ioticosgodlevel";
+const mongoDatabase = "iotgator";
 
 var uri = "mongodb://" + mongoUserName + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort + "/" + mongoDatabase;
 

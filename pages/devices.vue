@@ -60,7 +60,7 @@
 
         <div class="row pull-right">
           <div class="col-12">
-            <base-button type="primary" class="mb-3" size="lg">Add</base-button>
+            <base-button type="info" class="mb-3" size="lg">Add</base-button>
           </div>
         </div>
       </card>
@@ -73,8 +73,8 @@
           <h4 class="card-title">Devices</h4>
         </div>
 
-        <el-table :data="$store.state.devices">
-          <!-- needs Table and Table.Column. Passing the objects array 'devices' from export default below -->
+        <el-table :data="$store.state.devices"> <!--Each iteration represents an element of the data array (devices here) -->
+          <!-- needs Table and Table.Column. Passing the objects array 'devices' from export default below /now global state -->
 
           <el-table-column label="#" min-width="50" align="center">
             <!-- slot-scope to extract information of the current iteration (table-column is automated) -->
@@ -84,7 +84,7 @@
             </div>
           </el-table-column>
 
-          <!-- prop is the source of the column data. Cells will automatically fill for rows  -->
+          <!-- prop is the source data for the column. Cells will automatically fill for rows  -->
           <el-table-column prop="name" label="Name"></el-table-column>
 
           <el-table-column prop="dId" label="Device Id"></el-table-column>
@@ -112,9 +112,9 @@
               </el-tooltip>
               
               <!-- tooltip for delete button -->
-              <el-tooltip content="Delete" effect="light" :open-delay="300" placement="top">
+              <el-tooltip content="Delete" @click="deleteDevice(row)" effect="light" :open-delay="300" placement="top">
                 <!-- tooltip for delete button -->
-                <base-button type="danger" icon size="sm" class="btn-link" @click="deleteDevice(row)">
+                <base-button type="primary" icon size="sm" class="btn-link" @click="deleteDevice(row)">
                   <i class="tim-icons icon-simple-remove "></i>
                 </base-button>
               </el-tooltip>
@@ -151,8 +151,38 @@ export default {
   },
   methods: {
     deleteDevice(device) {
-      alert("DELETING " + device.name);
-    },
+
+      const axiosHeader = {
+        headers: {
+          token: this.$store.state.auth.token  //access the global state token
+        },
+        params: {
+          dId: device.dId
+        }
+      }
+      alert("Deleting " + device.name);
+      this.$axios  //axios is globally accessible by nuxt. middleman between front and API to make requests
+        .delete("/device", axiosHeader) //the delete method receives params via URL (query), they go in the header
+        .then(res => {
+          //success! - device deleted.
+          if (res.data.status == "success") {
+            this.$notify({
+              type: "success",
+              icon: "tim-icons icon-check-2",
+              message: "Device " + device.name + " deleted!"
+            });
+            this.$store.dispatch("getDevices");  //fetch new device list from DB and updates the global state
+          }
+        })
+        .catch( (err)=>{
+          console.log(err);
+          this.$notify({
+              type: "danger",
+              icon: "tim-icons icon-alert-circle-exc",
+              message: "Device " + device.name + " deleted!"
+            });
+        } )
+    },     
     updateSaverRuleStatus(index) {
       console.log(index);
       this.devices[index].saverRule = !this.devices[index].saverRule;

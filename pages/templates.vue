@@ -560,7 +560,7 @@
           <div class="col-12">
             <base-button
               native-type="submit"
-              type="primary"
+              type="info"
               class="mb-3"
               size="lg"
               @click="addNewWidget()"
@@ -635,7 +635,7 @@
           <div class="col-12">
             <base-button
               native-type="submit"
-              type="primary"
+              type="info"
               class="mb-3 pull-right"
               size="lg"
               @click="saveTemplate()"
