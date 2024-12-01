@@ -4,9 +4,37 @@ const router = express.Router();
 
 const {checkAuth} = require('../middlewares/authentication');
 
+router.get("/template", checkAuth, async (req, res) => {        //GET TEMPLATES
+
+    try {
+  
+      const userId = req.userData._id;  //from token
+      const templates = await Template.find({ userId: userId });
+  
+      const toSend = {
+        status: "success",
+        data: templates
+      };
+  
+      res.json(toSend);
+  
+    } catch (error) {
+        console.log(error);
+        
+      console.log("ERROR GETTING TEMPLATES");
+  
+      const toSend = {
+        status: "error",
+        error: error
+      };
+  
+      return res.status(500).json(toSend);
+    }
+  });
+
 router.post("/template", checkAuth, async (req, res) => {  //(Create)
 
-    console.log( req.userData );
+    //console.log( req.userData );
     const userId = req.userData._id;    //from token
     var newTemplate = req.body.template; //EXPECTING NAME, DESCRIPTION, WIDGETS
 
@@ -40,13 +68,12 @@ router.delete("/template", checkAuth, async (req, res) => {  //(Delete)
     
     try {
         const userId = req.userData._id;
-        const dId = req.query.dId;  //delete method uses query too
+        const templateId = req.query.templateId;  //delete method uses query too
     
-        const result = await Template.deleteOne({ userId: userId, dId: dId  });
+        const result = await Template.deleteOne({ userId: userId, _id: templateId  });
     
         const toSend = {
-            status: "success",
-            result: result
+            status: "success"
         }
     
         return res.json(toSend);
@@ -62,34 +89,6 @@ router.delete("/template", checkAuth, async (req, res) => {  //(Delete)
     }
 
 });
-
-router.get("/template", checkAuth, async (req, res) => {
-
-    try {
-  
-      const userId = req.userData._id;
-      const templates = await Template.find({ userId: userId });
-  
-      const toSend = {
-        status: "success",
-        data: templates
-      };
-  
-      res.json(toSend);
-  
-    } catch (error) {
-        console.log(error);
-        
-      console.log("ERROR GETTING TEMPLATES");
-  
-      const toSend = {
-        status: "error",
-        error: error
-      };
-  
-      return res.status(500).json(toSend);
-    }
-  });
 
 module.exports = router;        //requires export to connect this endpoint with index
 

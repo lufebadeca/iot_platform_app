@@ -12,6 +12,17 @@
     <slot name="label">
       <label v-if="label"> {{ label }} {{ required ? '*' : '' }} </label>
     </slot>
+
+    <el-tooltip 
+      content="How to add icons? Click for more info on font awesome icons" 
+      style="margin-right:10px" 
+      v-if="label === 'Icon'"
+    >
+      <a href="https://fontawesome.com/v6/search?o=r&m=free" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-circle-question"></i>
+      </a>
+    </el-tooltip>
+    
     <div class="mb-0" :class="{'input-group': hasIcon}">
       <slot name="addonLeft">
         <span v-if="addonLeftIcon" class="input-group-prepend">

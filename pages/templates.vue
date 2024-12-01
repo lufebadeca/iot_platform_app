@@ -72,7 +72,8 @@
                 v-model="ncConfig.icon"
                 label="Icon"
                 type="text"
-              ></base-input>
+              >
+              </base-input>
 
               <br />
 
@@ -423,14 +424,14 @@
             <!-- FORM INDICATOR TYPE -->
             <div v-if="widgetType == 'indicator'">
               <base-input
-                v-model="iotIndicatorConfig.variableFullName"
+                v-model="configIndicator.variableFullName"
                 label="Var Name"
                 type="text"
               >
               </base-input>
 
               <base-input
-                v-model="iotIndicatorConfig.icon"
+                v-model="configIndicator.icon"
                 label="Icon"
                 type="text"
               ></base-input>
@@ -438,7 +439,7 @@
               <br />
 
               <el-select
-                v-model="iotIndicatorConfig.class"
+                v-model="configIndicator.class"
                 class="select-success"
                 placeholder="Select Class"
                 style="width: 100%;"
@@ -473,7 +474,7 @@
               <br /><br /><br />
 
               <el-select
-                v-model="iotIndicatorConfig.column"
+                v-model="configIndicator.column"
                 class="select-success"
                 placeholder="Select Column Width"
                 style="width: 100%;"
@@ -550,7 +551,7 @@
             ></Iotbutton>
             <Iotindicator
               v-if="widgetType == 'indicator'"
-              :config="iotIndicatorConfig"
+              :config="configIndicator"
             ></Iotindicator>
           </div>
         </div>
@@ -639,6 +640,7 @@
               class="mb-3 pull-right"
               size="lg"
               @click="saveTemplate()"
+              :disabled="widgets.length==0"
             >
               Save Template
             </base-button>
@@ -703,7 +705,7 @@
     </div>
 
     <!-- JSONS -->
-    <Json :value="widgets"></Json>
+    <Json :value="templates"></Json>
   </div>
 </template>
 
@@ -793,11 +795,34 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("getTemplates");
+    this.getTemplates();
   },
 
   methods: {
-
+    //Get Templates
+    async getTemplates() {
+      const axiosHeaders = {
+        headers: {
+          token: this.$store.state.auth.token
+        }
+      };
+      try {
+        const res = await this.$axios.get("/template", axiosHeaders);
+        console.log(res.data);
+        if (res.data.status == "success") {
+          this.templates = res.data.data;   //updates the local prop templates, brings the _id given by mongo db
+        }
+      } catch (error) {
+        this.$notify({
+          type: "danger",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Error getting templates..."
+        });
+        console.log(error);
+        return;
+      }
+    },
+    //Save Template
     async saveTemplate() {
       const axiosHeaders = {  //a header is necessary to build the axios request
         headers: {
@@ -821,7 +846,7 @@ export default {
             icon: "tim-icons icon-alert-circle-exc",
             message: "Template created!"
           });
-          //this.getTemplates();
+          this.getTemplates();
         }
       } catch (error) {
         this.$notify({
@@ -869,6 +894,39 @@ export default {
         );
       }
       return result;
+    },
+    //Delete Template
+    async deleteTemplate(template) {
+      
+      const axiosHeaders = {
+        headers: {
+          token: this.$store.state.auth.token
+        },
+        params:{
+          templateId:template._id   //_id attribute given by mongo upon creation, then retrieved locally by getTemplates
+        }
+      };
+      //console.log(axiosHeaders);
+      try {
+        const res = await this.$axios.delete("/template", axiosHeaders);
+        if (res.data.status == "success") {
+          this.$notify({
+            type: "success",
+            icon: "tim-icons icon-alert-circle-exc",
+            message: template.name + " was deleted!"
+          });
+          
+          this.getTemplates();
+        }
+      } catch (error) {
+        this.$notify({
+          type: "danger",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Error deleting template..."
+        });
+        console.log(error);
+        return;
+      }
     }
   }
 };

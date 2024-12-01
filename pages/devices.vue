@@ -10,6 +10,7 @@
         <div class="row">
           <div class="col-4">
             <base-input
+              v-model="newDevice.name"
               label="Device Name"
               type="text"
               placeholder="Ex: Home, Office..."
@@ -19,6 +20,7 @@
 
           <div class="col-4">
             <base-input
+              v-model="newDevice.dId"
               label="Device Id"
               type="text"
               placeholder="Ex: 7777-8888"
@@ -32,35 +34,26 @@
             </slot>
 
             <el-select
-              value="1"
+              v-model="templateIndex"
               placeholder="Select Template"
               class="select-primary"
               style="width:100%"
             >
               <el-option
+                v-for="(template, index) in templates"
                 class="text-dark"
-                value="Template 1"
-                label="Template 1"
+                :value="index"
+                :label="template.name"
+                :key="template._id"
               ></el-option>
 
-              <el-option
-                class="text-dark"
-                value="Template 2"
-                label="Template 2"
-              ></el-option>
-
-              <el-option
-                class="text-dark"
-                value="Template 3"
-                label="Template 3"
-              ></el-option>
             </el-select>
           </div>
         </div>
 
         <div class="row pull-right">
           <div class="col-12">
-            <base-button type="info" class="mb-3" size="lg">Add</base-button>
+            <base-button type="info" class="mb-3" size="lg" @click="createNewDevice()">Add</base-button>
           </div>
         </div>
       </card>
@@ -125,7 +118,7 @@
       </card>
     </div>
 
-    <Json :value="$store.state.devices"></Json>
+    <Json :value="templates"></Json>
     
   </div>
 </template>
@@ -144,12 +137,142 @@ export default {
   },
   data() {
     return {
+      templates: [],
+      templateIndex: null,
+      newDevice: {
+        name: "",
+        dId: "",
+        templateId: "",
+        templateName: ""
+      }
     };
   },
   mounted() {
     this.$store.dispatch("getDevices");
+    this.getTemplates();
   },
   methods: {
+
+    //Get Devices
+    async getDevices() {
+      const axiosHeaders = {
+        headers: {
+          token: this.$store.state.auth.token
+        }
+      };
+      try {
+        const res = await this.$axios.get("/device", axiosHeaders);
+        console.log(res.data);
+        if (res.data.status == "success") {
+          this.templates = res.data.data;   //updates the local prop devices, brings the _id given by mongo db
+        }
+      } catch (error) {
+        this.$notify({
+          type: "danger",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Error getting templates..."
+        });
+        console.log(error);
+        return;
+      }
+    },
+
+    //new device
+    createNewDevice() {
+      if (this.newDevice.name == "") {
+        this.$notify({
+          type: "warning",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Device Name is Empty :("
+        });
+        return;
+      }
+      if (this.newDevice.dId == "") {
+        this.$notify({
+          type: "warning",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Device ID is Empty :("
+        });
+        return;
+      }
+      if (this.templateIndex == null) {
+        this.$notify({
+          type: "warning",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Template must be selected"
+        });
+        return;
+      }
+      const axiosHeaders = {
+        headers: {
+          token: this.$store.state.auth.token
+        }
+      };
+      //writing name and id of newDevice
+      this.newDevice.templateId = this.templates[ this.templateIndex ]._id;
+      this.newDevice.templateName = this.templates[ this.templateIndex ].name;
+      const toSend = {
+        newDevice: this.newDevice
+      };
+      this.$axios
+        .post("/device", toSend, axiosHeaders)
+        .then(res => {
+          if (res.data.status == "success") {
+            this.$notify({
+              type: "success",
+              icon: "tim-icons icon-check-2",
+              message: `Success! Device ${this.newDevice.name} was added`
+            });
+            this.$store.dispatch("getDevices");
+            this.newDevice.name = "";
+            this.newDevice.dId = "";
+            this.templateIndex = null;
+            return;
+          }
+        })
+        .catch(e => {
+          if (
+            e.response.data.status == "error" &&
+            e.response.data.error.errors.dId.kind == "unique"
+          ) {
+            this.$notify({
+              type: "warning",
+              icon: "tim-icons icon-alert-circle-exc",
+              message:
+                "The device is already registered in the system. Try another device"
+            });
+            return;
+          } else {
+            this.showNotify("danger", "Error");
+            return;
+          }
+        });
+    },
+
+    //Get Templates
+    async getTemplates() {
+      const axiosHeaders = {
+        headers: {
+          token: this.$store.state.auth.token
+        }
+      };
+      try {
+        const res = await this.$axios.get("/template", axiosHeaders);
+        console.log(res.data);
+        if (res.data.status == "success") {
+          this.templates = res.data.data;
+        }
+      } catch (error) {
+        this.$notify({
+          type: "danger",
+          icon: "tim-icons icon-alert-circle-exc",
+          message: "Error getting templates..."
+        });
+        console.log(error);
+        return;
+      }
+    },
+
     deleteDevice(device) {
 
       const axiosHeader = {   //a header is necessary to build the axios request
@@ -160,7 +283,7 @@ export default {
           dId: device.dId
         }
       }
-      alert("Deleting " + device.name);
+      //alert("Deleting " + device.name);
       this.$axios  //axios is globally accessible by nuxt. middleman between front and API to make requests
         .delete("/device", axiosHeader) //the delete method receives params via URL (query), they go in the header
         .then(res => {

@@ -16,6 +16,6 @@ const userSchema = new Schema({
 userSchema.plugin(uniqueValidator, {message: 'Error, template name already exists'});
 
 //Convert to model
-const Template = mongoose.model( 'Template', userSchema );
+const Template = mongoose.model( 'Template', userSchema );  //third optional argument: 'custom_collection_name'. Default is pluralization of model name
 
 export default Template;
