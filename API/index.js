@@ -18,6 +18,8 @@ app.use(cors());
 app.use("/api", require("./routes/devices.js"));
 app.use("/api", require("./routes/users.js"));
 app.use("/api", require("./routes/templates.js"));
+app.use("/api", require("./routes/webhooks.js"));
+app.use("/api", require("./routes/emqxapi.js"));
 
 module.exports = app;       //this commands allows to export endpoints or routes in separate files and folder 
 

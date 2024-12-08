@@ -1,8 +1,8 @@
 {
-  "name": "iot_gl_app",
+  "name": "iot_gator_app",
   "version": "1.0.0",
-  "description": "IOT_GL_APP",
-  "author": "IoTicos.org",
+  "description": "IOT_GATOR_APP",
+  "author": "IoTgator.com",
   "scripts": {
     "dev": "nuxt",
     "devn": "nodemon api/index.js --exec babel-node",
