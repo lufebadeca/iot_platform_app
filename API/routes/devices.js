@@ -1,6 +1,9 @@
 import Device from "../models/device";
+import SaverRule from '../models/emqx_saver_rule.js';
+
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 
 const {checkAuth} = require('../middlewares/authentication');
 
@@ -22,144 +25,206 @@ router.post("/testingDev", (req, res) => {       //from here, instead of app.get
 
 //CRUD (Create, Read, Update, Delete), Get (URL query), Post, Delete (URL query), Put
 
+const auth = {
+  auth: {
+    username: "admin",
+    password: "Luifer94"
+  }
+};
+
 //localhost:3001/api/device?dId=XXX (URL runs a GET by default)
 router.get("/device", checkAuth, async (req, res) => {
 
-    try {
-  
-      const userId = req.userData._id;
-      const devices = await Device.find({ userId: userId });
-  
-      const toSend = {
-        status: "success",
-        data: devices
-      };
-  
-      res.json(toSend);
-  
-    } catch (error) {
-  
-      console.log("ERROR GETTING DEVICES")
-  
-      const toSend = {
-        status: "error",
-        error: error
-      };
-  
-      return res.status(500).json(toSend);
-    }
-  });
+  try {
+
+    const userId = req.userData._id;
+    const devices = await Device.find({ userId: userId });
+
+    const toSend = {
+      status: "success",
+      data: devices
+    };
+
+    res.json(toSend);
+
+  } catch (error) {
+
+    console.log("ERROR GETTING DEVICES")
+
+    const toSend = {
+      status: "error",
+      error: error
+    };
+
+    return res.status(500).json(toSend);
+  }
+});
 
 router.post("/device", checkAuth, async (req, res) => {  //(Create)
+  console.log( req.userData );
+  const userId = req.userData._id;    //from token
+  var newDevice = req.body.newDevice;
 
-    console.log( req.userData );
-    const userId = req.userData._id;    //from token
-    var newDevice = req.body.newDevice;
+  //console.log( newDevice );
 
-    //console.log( newDevice );
+  newDevice.userId = userId; //adding userId to the device being passed
+  newDevice.createdTime = Date.now();
 
-    newDevice.userId = userId; //adding userId to the device being passed
-    newDevice.createdTime = Date.now();
+  try {
+      const device = await Device.create( newDevice );
 
-    try {
-        const device = await Device.create( newDevice );
+      const toSend = {
+          status: "success"
+      }
+      res.json( toSend );
 
-        const toSend = {
-            status: "success"
-        }
-        res.json( toSend );
+  } catch (error) {
 
-    } catch (error) {
-
-        const toSend = {
-            status: "error",
-            error: error
-        }
-        console.log( "ERROR CREATING NEW DEVICE");
-        console.log( error );
-        res.status(500).json(toSend);
-    }
-
-
+      const toSend = {
+          status: "error",
+          error: error
+      }
+      console.log( "ERROR CREATING NEW DEVICE");
+      console.log( error );
+      res.status(500).json(toSend);
+  }
 });
 
 router.delete("/device", checkAuth, async (req, res) => {  //(Delete)
-    
-    try {
-        const userId = req.userData._id;
-        const dId = req.query.dId;  //delete method uses query too
-    
-        const result = await Device.deleteOne({ userId: userId, dId: dId  });
-    
-        const toSend = {
-            status: "success",
-            result: result
-        }
-    
-        return res.json(toSend);
-    } catch (error) {
-        const toSend = {
-            status: "error",
-            error: error
-        }
-        console.log( "ERROR DELETING DEVICE");
-        console.log( error );
-        res.status(500).json(toSend);
-    }
-
-
+  try {
+      const userId = req.userData._id;
+      const dId = req.query.dId;  //delete method uses query too
+  
+      const result = await Device.deleteOne({ userId: userId, dId: dId  });
+  
+      const toSend = {
+          status: "success",
+          result: result
+      }
+  
+      return res.json(toSend);
+  } catch (error) {
+      const toSend = {
+          status: "error",
+          error: error
+      }
+      console.log( "ERROR DELETING DEVICE");
+      console.log( error );
+      res.status(500).json(toSend);
+  }
 });
 
 router.put("/device", checkAuth, (req, res) => {    //Updates the selected property
-    const dId = req.body.dId;
-    const userId = req.userData._id;
-  
-    if (selectDevice(userId, dId)) {
-      const toSend = {
-        status: "success"
-      };
-  
-      return res.json(toSend);
-    } else {
-      const toSend = {
-        status: "error"
-      };
-  
-      return res.json(toSend);
-    }
-  });
+  const dId = req.body.dId;
+  const userId = req.userData._id;
+
+  if (selectDevice(userId, dId)) {
+    const toSend = {
+      status: "success"
+    };
+
+    return res.json(toSend);
+  } else {
+    const toSend = {
+      status: "error"
+    };
+
+    return res.json(toSend);
+  }
+});
+
+setTimeout(() => {
+  createSaverRule("testUserId","TestDId",false);
+}, 2000);
+
 
 async function selectDevice(userId, dId) {
-    try {
-      const result = await Device.updateMany(
-        { userId: userId },
-        { selected: false }
-      );
-  
-      const result2 = await Device.updateOne(
-        { dId: dId, userId: userId },
-        { selected: true }
-      );
-  
-      return true;
-  
-    } catch (error) {
-      console.log("ERROR IN 'selectDevice' FUNCTION ");
-      console.log(error);
-      return false;
-    }
+  try {
+    const result = await Device.updateMany(
+      { userId: userId },
+      { selected: false }
+    );
+
+    const result2 = await Device.updateOne(
+      { dId: dId, userId: userId },
+      { selected: true }
+    );
+
+    return true;
+
+  } catch (error) {
+    console.log("ERROR IN 'selectDevice' FUNCTION ");
+    console.log(error);
+    return false;
   }
-
-module.exports = router;        //requires export to connect this endpoint with index
-
+}
 /*
+ SAVER RULES FUNCTIONS
+*/
+//get saver rule
+//create saver rule
+async function createSaverRule(userId, dId, status) {
+
+  try {
+  const url = "http://localhost:8085/api/v4/rules";
+  const topic = userId + "/" + dId + "/+/sdata";
+  const rawsql = "SELECT topic, payload FROM \"" + topic + "\" WHERE payload.save = 1";
+  var newRule = {
+    rawsql: rawsql,
+    actions: [
+      {
+        name: "data_to_webserver",
+        params: {
+          $resource: global.saverResource.id,
+          payload_tmpl: '{"userId":"' +  userId + '","payload":${payload},"topic":"${topic}"}'
+        }
+      }
+    ],
+    description: "SAVER-RULE",
+    enabled: status
+  };
+  //save rule in emqx - grabamos la regla en emqx
+  const res = await axios.post(url, newRule, auth);   //url for localhost:80858, emq dashboard api
+  if(res.status === 200 && res.data.data){
+    console.log(res.data.data);     // .id to retrieve rule id
+
+    await SaverRule.create({    // create in mongo
+      userId: userId,
+      dId: dId,
+      emqxRuleId: res.data.data.id,
+      status: status
+    });
+    return true;
+  }else{
+    return false;
+  }
+  } catch (error) {
+    console.log("Error creating saver rule")
+    console.log(error);
+    return false;
+  }
+}
+//update saver rule
+//delete saver rule
+
+module.exports = router; //requires export to connect this endpoint with index
+
+/* topic -> payload:
+userId/dId/temperature -> 
 {
-    "newDevice": {
-        "userId": "abcde",
-        "dId": "121212",
-        "name": "HOME",
-        "templateName": "esp32 template",
-        "templateId": "ababab"
-    }
+  value: 21,
+  save: 1
+}
+*/        
+
+/*  
+{
+  "newDevice": {
+      "userId": "abcde",
+      "dId": "121212",
+      "name": "HOME",
+      "templateName": "esp32 template",
+      "templateId": "ababab"
+  }
 }
 */
