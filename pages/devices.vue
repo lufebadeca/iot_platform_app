@@ -95,12 +95,12 @@
               <el-tooltip content="Saver Status Indicator" style="margin-right:10px">
 
                 <!-- icon object for database. Fix class database, variable classes: text-success when saverRule = true and text-dark when false  -->
-                <i class="fas fa-database " :class="{'text-success' : row.saverRule, 'text-dark' : !row.saverRule}" ></i>
+                <i class="fas fa-database " :class="{'text-success' : row.saverRule.status, 'text-dark' : !row.saverRule.status}" ></i>
               </el-tooltip>
               
               <!-- switch for each row. Uses index to send iteration number as parameter for updating the right DB status -->
               <el-tooltip content="Database Saver">
-                <base-switch @click="updateSaverRuleStatus($index)" :value="row.saverRule" type="primary" on-text="On" off-text="Off">
+                <base-switch @click="updateSaverRuleStatus(row.saverRule)" :value="row.saverRule.status" type="primary" on-text="On" off-text="Off">
                 </base-switch>
               </el-tooltip>
               
@@ -118,7 +118,7 @@
       </card>
     </div>
 
-    <Json :value="templates"></Json>
+    <Json :value='$store.state.devices'></Json>
     
   </div>
 </template>
@@ -153,29 +153,82 @@ export default {
   },
   methods: {
 
-    //Get Devices
-    async getDevices() {
+    updateSaverRuleStatus(rule) {
+      var ruleCopy = JSON.parse(JSON.stringify(rule));
+      ruleCopy.status = !ruleCopy.status;
+      const toSend = { rule: ruleCopy };
       const axiosHeaders = {
         headers: {
           token: this.$store.state.auth.token
         }
       };
-      try {
-        const res = await this.$axios.get("/device", axiosHeaders);
-        console.log(res.data);
-        if (res.data.status == "success") {
-          this.templates = res.data.data;   //updates the local prop devices, brings the _id given by mongo db
-        }
-      } catch (error) {
-        this.$notify({
-          type: "danger",
-          icon: "tim-icons icon-alert-circle-exc",
-          message: "Error getting templates..."
+      this.$axios
+        .put("/saver-rule", toSend, axiosHeaders)
+        .then(res => {
+          if (res.data.status == "error") {
+            this.$notify({
+              type: "danger",
+              icon: "tim-icons icon-alert-circle-exc",
+              message: " Error updating Saver Status..."
+            });
+            return;
+          }
+          if (res.data.status == "success") {
+            this.$store.dispatch("getDevices"); //updates devices again to show the changed saver status
+            this.$notify({
+              type: "success",
+              icon: "tim-icons icon-check-2",
+              message: " Device Saver Status Updated"
+            });
+          }
+
+          return;
+        })
+        .catch(e => {
+          console.log(e);
+          this.$notify({
+            type: "danger",
+            icon: "tim-icons icon-alert-circle-exc",
+            message: "Error updating saver rule status"
+          });
+          return;
         });
-        console.log(error);
-        return;
-      }
     },
+
+    deleteDevice(device) {
+      const axiosHeaders = {
+        headers: {
+          token: this.$store.state.auth.accessToken
+        },
+        params: {
+          dId: device.dId
+        }
+      };
+      this.$axios
+        .delete("/device", axiosHeaders)
+        .then(res => {
+          if (res.data.status == "success") {
+            this.$notify({
+              type: "success",
+              icon: "tim-icons icon-check-2",
+              message: device.name + " deleted!"
+            });
+          }
+          $nuxt.$emit("time-to-get-devices");
+          return;
+        })
+        .catch(e => {
+          console.log(e);
+          this.$notify({
+            type: "danger",
+            icon: "tim-icons icon-alert-circle-exc",
+            message: " Error deleting " + device.name
+          });
+          return;
+        });
+    },
+
+    //former getDevices method translated to store (global state)
 
     //new device
     createNewDevice() {
@@ -305,10 +358,6 @@ export default {
               message: "Device " + device.name + " deleted!"
             });
         } )
-    },     
-    updateSaverRuleStatus(index) {
-      console.log(index);
-      this.devices[index].saverRule = !this.devices[index].saverRule;
     }
   }
 };

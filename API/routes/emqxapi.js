@@ -71,10 +71,9 @@ try {
         function printWarning() {
           console.log("DELETE ALL WEBHOOK EMQX RESOURCES AND RESTART NODE - youremqxdomain:8085/#/resources".red);
           setTimeout(() => {
-            printWarning();
+            printWarning(); //recursivity
           }, 1000);
         }
-  
         printWarning();
       }
     }else{
