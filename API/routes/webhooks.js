@@ -4,7 +4,6 @@ const axios = require('axios');
 const colors = require('colors');
 const { dragDisable } = require('d3');
 
-
 //API entrypoint to receive data from EMQX according to rule
 //first, create a resource in EMQX with this entry URL
 //then create a rule that sends data to this entrypoint to be processed
@@ -16,6 +15,5 @@ router.post('/saver-webhook', async (req, res) => {     // resource at: http://l
     res.json("{}"); 
 
 });
-
 
 module.exports = router;
