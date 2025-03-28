@@ -10,6 +10,7 @@ const app = express();  //app is the var that represents express
 
 //express config
 app.use(morgan("tiny"));    //output for all routes extant or not, tiny for small text
+app.use(express.text());
 app.use(express.json());    //allows json usage
 app.use(express.urlencoded({extended: true}));  //enables URL parameters ?userId=111&userName=222
 app.use(cors());

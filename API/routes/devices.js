@@ -156,7 +156,7 @@ router.put("/device", checkAuth, (req, res) => {    //Updates the 'selected' pro
 router.put('/saver-rule', checkAuth, async (req, res) => {
   
   const rule = req.body.rule;
-  console.log(rule)
+  console.log(rule);
   await updateSaverRuleStatus(rule.emqxRuleId, rule.status)
   const toSend = {
     status: "success"
@@ -220,10 +220,8 @@ async function createSaverRule(userId, dId, status) {
           name: "data_to_webserver",
           params: {
             $resource: global.saverResource.id,
-            payload_tmpl:
-              '{"userId":"' +
-              userId +
-              '","payload":${payload},"topic":"${topic}"}'
+            // payload_tmpl: '{"userId":"' + userId + '","payload":${payload},"topic":"${topic}"}',
+            body: '{"userId":"' + userId + '","payload":${payload},"topic":"${topic}"}',
           }
         }
       ],

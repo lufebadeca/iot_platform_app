@@ -97,9 +97,10 @@ async function createResources() {
             "config": {
                 url: "http://localhost:3001/api/saver-webhook",
                 headers: {
-                    token: "121212"
+                    token: "121212",
+                    "content-type": "application/json" //add this to parse body
                 },
-                method: "POST"
+                method: "POST",
             },
             description: "saver-webhook"
         }
@@ -109,7 +110,8 @@ async function createResources() {
             "config": {
                 url: "http://localhost:3001/api/alarm-webhook",
                 headers: {
-                    token: "121212"
+                    token: "121212",
+                    "content-type": "application/json"
                 },
                 method: "POST"
             },
