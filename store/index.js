@@ -3,7 +3,8 @@
 export const state = () => ({   
     auth: null,
     devices: [],
-    templates: []
+    templates: [],
+    selectedDevice: {}
 });
 
 export const mutations = {    //mutations are simple state setters
@@ -17,7 +18,11 @@ export const mutations = {    //mutations are simple state setters
 
     setTemplates(state, templates) {
         state.templates = templates;
-    }
+    },
+
+    setSelectedDevice(state, device) {
+        state.selectedDevice = device;
+    },
 };
 
 export const actions = {      //actions are more elaborate methods that use the state
@@ -43,6 +48,14 @@ export const actions = {      //actions are more elaborate methods that use the 
         this.$axios.get("/device", axiosHeader)
         .then(res => {
         console.log(res.data.data);
+
+        res.data.data.forEach((device, index) => {
+            if (device.selected){
+              this.commit("setSelectedDevice", device);
+              $nuxt.$emit('selectedDeviceIndex', index);
+            }
+          });
+
         this.commit("setDevices", res.data.data)
         });
     },

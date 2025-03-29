@@ -98,7 +98,7 @@ async function createResources() {
                 url: "http://localhost:3001/api/saver-webhook",
                 headers: {
                     token: "121212",
-                    "content-type": "application/json" //add this to parse body
+                    "content-type": "application/json" //add this to parse body of req in endpoint
                 },
                 method: "POST",
             },
@@ -111,7 +111,7 @@ async function createResources() {
                 url: "http://localhost:3001/api/alarm-webhook",
                 headers: {
                     token: "121212",
-                    "content-type": "application/json"
+                    "content-type": "application/json" //add this to parse body of req in endpoint
                 },
                 method: "POST"
             },

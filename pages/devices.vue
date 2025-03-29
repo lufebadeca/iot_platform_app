@@ -118,6 +118,7 @@
       </card>
     </div>
 
+    <Json :value="$store.state.selectedDevice"></Json>
     <Json :value='$store.state.devices'></Json>
     
   </div>
@@ -148,7 +149,6 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("getDevices");
     this.getTemplates();
   },
   methods: {
