@@ -1,5 +1,6 @@
 import Device from "../models/device";
 import SaverRule from '../models/emqx_saver_rule.js';
+import Template from '../models/template.js';
 
 const express = require("express");
 const router = express.Router();
@@ -47,9 +48,14 @@ router.get("/device", checkAuth, async (req, res) => {
     const saverRules = await getSaverRules(userId);
     //saver rules stored in separate db. We want to append saverrule prop to each device
 
+    //get templates
+    const templates = await getTemplates(userId);
+    //console.log(templates);
 
-    devices.forEach( device => {
-      device.saverRule = saverRules.find( rule=> rule.dId==device.dId );     
+    //saver rules and templates to -> devices
+    devices.forEach((device, index) => {    //filter returns an array, but we only need a single result, hence [0]
+      devices[index].saverRule = saverRules.filter(saverRule => saverRule.dId == device.dId)[0];
+      devices[index].template = templates.filter(template => template._id == device.templateId)[0];
     });
 
     const toSend = {
@@ -61,7 +67,8 @@ router.get("/device", checkAuth, async (req, res) => {
 
   } catch (error) {
 
-    console.log("ERROR GETTING DEVICES")
+    console.log("ERROR GETTING DEVICES");
+    console.log(error);
 
     const toSend = {
       status: "error",
@@ -74,7 +81,7 @@ router.get("/device", checkAuth, async (req, res) => {
 
 //NEW DEVICE
 router.post("/device", checkAuth, async (req, res) => {  //(Create)
-  console.log( req.userData );
+  //console.log( req.userData );
   const userId = req.userData._id;    //from token
   var newDevice = req.body.newDevice;
 
@@ -133,11 +140,11 @@ router.delete("/device", checkAuth, async (req, res) => {  //(Delete)
 });
 
 //UPDATE DEVICE (toggle 'selected' )
-router.put("/device", checkAuth, (req, res) => {    //Updates the 'selected' property
+router.put("/device", checkAuth, async (req, res) => {    //Updates the 'selected' property
   const dId = req.body.dId;
   const userId = req.userData._id;
 
-  if (selectDevice(userId, dId)) {  //selectDevice returns true or false
+  if (await selectDevice(userId, dId)) {  //selectDevice returns true or false
     const toSend = {
       status: "success"
     };
@@ -196,6 +203,16 @@ async function selectDevice(userId, dId) {
  THIS RULES ARE BOTH CREATED IN THE EMQX DASHBOARD AND IN A MONGO COLLECTION FOR PERSISTANCE
 */
 
+//get templates
+async function getTemplates(userId) {
+  try {
+    const templates = await Template.find({ userId: userId });
+    return templates;
+  } catch (error) {
+    return false;
+  }
+} 
+
 //get saver rules
 async function getSaverRules(userId) {
   try {
@@ -232,7 +249,7 @@ async function createSaverRule(userId, dId, status) {
     const res = await axios.post(url, newRule, auth);
 
     if (res.status === 200 && res.data.data) {
-      console.log(res.data.data);
+      //console.log(res.data.data);
 
       await SaverRule.create({
         userId: userId,
