@@ -237,8 +237,8 @@ async function createSaverRule(userId, dId, status) {
           name: "data_to_webserver",
           params: {
             $resource: global.saverResource.id,
-            // payload_tmpl: '{"userId":"' + userId + '","payload":${payload},"topic":"${topic}"}',
-            body: '{"userId":"' + userId + '","payload":${payload},"topic":"${topic}"}',
+            payload_tmpl: '{"userId":"' + userId + '","payload":${payload},"topic":"${topic}"}',
+            //body: '{"userId":"' + userId + '","payload":${payload},"topic":"${topic}"}',
           }
         }
       ],
