@@ -47,4 +47,38 @@ router.post('/saver-webhook', async (req, res) => {     // resource at: http://l
 
 });
 
+router.post("/alarm-webhook", async (req, res) => {
+  try {
+      if (req.headers.token != "121212") {
+          req.sendStatus(404);
+          return;
+        }
+        const data = req.body;
+
+        console.log(data);
+      
+        const splittedTopic = data.topic.split("/");
+        const dId = splittedTopic[1];
+        const variable = splittedTopic[2];
+          
+        var result = await Device.find({dId: dId, userId: data.userId});
+      
+        if (result.length == 1){
+            Data.create({
+              userId: data.userId,
+              dId: dId,
+              variable: variable,
+              value: data.payload.value,
+              time: Date.now()
+            })
+            console.log("Data created");
+        }
+        res.sendStatus(200);
+      
+  } catch (error) {
+      console.log(error);
+      res.sendStatus(200);
+  }
+});
+
 module.exports = router;

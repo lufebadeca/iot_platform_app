@@ -96,12 +96,12 @@
               <el-tooltip content="Saver Status Indicator" style="margin-right:10px">
 
                 <!-- icon object for database. Fix class database, variable classes: text-success when saverRule = true and text-dark when false  -->
-                <i class="fas fa-database " :class="{'text-success' : row.saverRule.status, 'text-dark' : !row.saverRule.status}" ></i>
+                <i class="fas fa-database " :class="{'text-success' : row.saverRule && row.saverRule.status, 'text-dark' : !row.saverRule || !row.saverRule.status}" ></i>
               </el-tooltip>
               
               <!-- switch for each row. Uses index to send iteration number as parameter for updating the right DB status -->
               <el-tooltip content="Database Saver">
-                <base-switch @click="updateSaverRuleStatus(row.saverRule)" :value="row.saverRule.status" type="primary" on-text="On" off-text="Off">
+                <base-switch @click="updateSaverRuleStatus(row.saverRule)" :value="row.saverRule ? row.saverRule.status : false" type="primary" on-text="On" off-text="Off">
                 </base-switch>
               </el-tooltip>
               
@@ -149,6 +149,7 @@ export default {
     };
   },
   mounted() {
+  this.$store.dispatch("getDevices");
     this.getTemplates();
   },
   methods: {

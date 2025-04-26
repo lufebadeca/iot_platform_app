@@ -876,8 +876,10 @@ export default {
       }
 
       if (this.widgetType == "indicator") {
-        this.iotIndicatorConfig.variable = this.makeid(10);
-        this.widgets.push(JSON.parse(JSON.stringify(this.iotIndicatorConfig)));
+        console.log("before pushing widget");
+        this.configIndicator.variable = this.makeid(10);
+        console.log("after pushing widget");
+        this.widgets.push(JSON.parse(JSON.stringify(this.configIndicator)));
       }
     },
     deleteWidget(index){

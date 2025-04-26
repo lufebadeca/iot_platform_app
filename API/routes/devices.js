@@ -1,6 +1,7 @@
 import Device from "../models/device";
-import SaverRule from '../models/emqx_saver_rule.js';
 import Template from '../models/template.js';
+import SaverRule from '../models/emqx_saver_rule.js';
+import AlarmRule from '../models/emqx_alarm_rule.js';
 
 const express = require("express");
 const router = express.Router();
@@ -42,20 +43,23 @@ router.get("/device", checkAuth, async (req, res) => {
     const userId = req.userData._id;
 
     //get devices
-    var devices = await Device.find({ userId: userId }); //mongoku object not equivalent to array,
-    devices = JSON.parse(JSON.stringify(devices)) ;  //not directly mutable, hence decoupling
+    var devices = await Device.find({ userId: userId }); //mongoose object not equivalent to array,
+    devices = JSON.parse(JSON.stringify(devices)) ;  //not directly mutable, hence decoupling needed
     //get saver rules
     const saverRules = await getSaverRules(userId);
     //saver rules stored in separate db. We want to append saverrule prop to each device
 
     //get templates
     const templates = await getTemplates(userId);
-    //console.log(templates);
+    
+    //get alarm rules for all devices of user
+    const alarmRules = await getAlarmRules(userId);
 
-    //saver rules and templates to -> devices
+    //saver rules, templates and alarmRules to -> devices
     devices.forEach((device, index) => {    //filter returns an array, but we only need a single result, hence [0]
       devices[index].saverRule = saverRules.filter(saverRule => saverRule.dId == device.dId)[0];
       devices[index].template = templates.filter(template => template._id == device.templateId)[0];
+      devices[index].alarmRules = alarmRules.filter(alarmRule => alarmRule.dId == device.dId);
     });
 
     const toSend = {
@@ -175,6 +179,16 @@ router.put('/saver-rule', checkAuth, async (req, res) => {
 /*
 AUXILIARY FUNCTIONS
 */
+
+async function getAlarmRules(userId) {
+  try {
+      const rules = await AlarmRule.find({ userId: userId });
+      return rules;
+  } catch (error) {
+      return "error";
+  }
+}
+
 
 //SELECT DEVICE: sets one to true, rest to false
 async function selectDevice(userId, dId) {
